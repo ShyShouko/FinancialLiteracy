@@ -4,55 +4,74 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
     tools:context=".ui.transactions.AddTransactionFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="24dp">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Добавить транзакцию"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="16dp"/>
+            android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
+            android:layout_marginBottom="24dp"/>
 
-        <RadioGroup
-            android:id="@+id/radioGroupType"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="16dp">
+            android:text="Тип транзакции"
+            android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+            android:layout_marginBottom="8dp"/>
 
-            <RadioButton
-                android:id="@+id/radioExpense"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Расход"
-                android:checked="true"
-                android:layout_marginEnd="16dp"/>
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="?attr/colorOutline"
+            app:cardCornerRadius="12dp">
 
-            <RadioButton
-                android:id="@+id/radioIncome"
-                android:layout_width="wrap_content"
+            <RadioGroup
+                android:id="@+id/radioGroupType"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Доход"/>
-        </RadioGroup>
+                android:orientation="horizontal"
+                android:padding="8dp">
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radioExpense"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Расход"
+                    android:checked="true"
+                    android:layout_marginEnd="16dp"
+                    android:minHeight="48dp"/>
+
+                <com.google.android.material.radiobutton.MaterialRadioButton
+                    android:id="@+id/radioIncome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Доход"
+                    android:minHeight="48dp"/>
+            </RadioGroup>
+        </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:hint="Сумма">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/amountEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Сумма"
                 android:inputType="numberDecimal"
                 android:maxLines="1" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -62,13 +81,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:hint="Дата"
+            app:startIconDrawable="@android:drawable/ic_menu_my_calendar"
+            app:startIconTint="?attr/colorPrimary">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/dateText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Дата"
                 android:focusable="false"
                 android:clickable="true"
                 android:inputType="none"
@@ -78,28 +99,39 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Категория:"
-            android:textSize="16sp"
+            android:text="Категория"
+            android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
             android:layout_marginBottom="8dp"/>
 
-        <Spinner
-            android:id="@+id/categorySpinner"
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:minHeight="48dp"/>
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="?attr/colorOutline"
+            app:cardCornerRadius="12dp">
+
+            <Spinner
+                android:id="@+id/categorySpinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:minHeight="56dp"
+                android:background="@null"/>
+        </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+            android:layout_marginBottom="32dp"
+            style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+            android:hint="Примечание (необязательно)">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/noteEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Примечание (необязательно)"
                 android:inputType="textMultiLine"
                 android:minLines="3"
                 android:gravity="top|start"/>
@@ -108,23 +140,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:gravity="end">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/cancelButton"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="Отмена"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_marginEnd="8dp"/>
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_marginEnd="16dp"/>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/saveButton"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Сохранить"/>
+                android:text="Сохранить"
+                style="@style/Widget.Material3.Button"/>
         </LinearLayout>
     </LinearLayout>
 </ScrollView> 

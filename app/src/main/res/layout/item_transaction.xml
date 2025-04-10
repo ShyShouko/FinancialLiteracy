@@ -1,77 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="2dp">
+    android:layout_marginVertical="4dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="1dp"
+    app:strokeWidth="0dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp">
+        android:padding="16dp">
 
-        <View
-            android:id="@+id/categoryColor"
-            android:layout_width="16dp"
-            android:layout_height="0dp"
-            android:background="@color/category_food"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/categoryIndicator"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            app:cardCornerRadius="18dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/category_food"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/categoryName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="8dp"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/amount"
-            app:layout_constraintStart_toEndOf="@id/categoryColor"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Продукты" />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-        <TextView
-            android:id="@+id/transactionNote"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="8dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@id/amount"
-            app:layout_constraintStart_toEndOf="@id/categoryColor"
-            app:layout_constraintTop_toBottomOf="@id/categoryName"
-            tools:text="Покупка в Пятерочке" />
+            android:layout_marginEnd="16dp"
+            android:orientation="vertical"
+            app:layout_constraintStart_toEndOf="@id/categoryIndicator"
+            app:layout_constraintEnd_toStartOf="@id/amountText"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/categoryNameText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                tools:text="Продукты" />
+
+            <TextView
+                android:id="@+id/noteDateText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                tools:text="Базовые продукты • 15 июня" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/transactionDate"
+            android:id="@+id/amountText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
-            android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@id/categoryColor"
-            app:layout_constraintTop_toBottomOf="@id/transactionNote"
-            tools:text="15 июня 2023, 15:30" />
-
-        <TextView
-            android:id="@+id/amount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="-500₽"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="-1,200₽"
             tools:textColor="@color/expense" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView> 
+
+</com.google.android.material.card.MaterialCardView> 

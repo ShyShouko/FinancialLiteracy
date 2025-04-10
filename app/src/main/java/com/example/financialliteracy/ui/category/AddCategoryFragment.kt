@@ -14,6 +14,7 @@ import com.example.financialliteracy.R
 import com.example.financialliteracy.data.model.Category
 import com.example.financialliteracy.data.model.CategoryType
 import com.example.financialliteracy.databinding.FragmentAddCategoryBinding
+import com.skydoves.colorpickerview.ColorPickerDialog
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 
 class AddCategoryFragment : Fragment() {
@@ -47,18 +48,43 @@ class AddCategoryFragment : Fragment() {
     
     private fun setupTypeSpinner() {
         val categoryTypes = arrayOf("Расход", "Доход")
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categoryTypes)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val adapter = ArrayAdapter(requireContext(), R.layout.item_spinner, categoryTypes)
+        adapter.setDropDownViewResource(R.layout.item_spinner_dropdown)
         
         binding.categoryTypeSpinner.adapter = adapter
         binding.categoryTypeSpinner.setSelection(0) // По умолчанию "Расход"
     }
     
     private fun setupColorPicker() {
-        binding.colorPickerView.setColorListener(ColorEnvelopeListener { envelope, _ ->
-            selectedColor = envelope.color
-            binding.colorPreview.setBackgroundColor(selectedColor)
-        })
+        // Устанавливаем изначальный цвет для превью
+        binding.colorPreview.setCardBackgroundColor(selectedColor)
+        
+        // Настраиваем обработчик клика на превью цвета
+        binding.colorPreview.setOnClickListener {
+            showColorPickerDialog()
+        }
+        
+        // Настраиваем обработчик клика на сам ColorPickerView
+        binding.colorPickerView.setOnClickListener {
+            showColorPickerDialog()
+        }
+    }
+    
+    private fun showColorPickerDialog() {
+        ColorPickerDialog.Builder(requireContext())
+            .setTitle("Выберите цвет")
+            .setPreferenceName("MyColorPickerDialog")
+            .setPositiveButton("Выбрать", ColorEnvelopeListener { envelope, _ ->
+                selectedColor = envelope.color
+                binding.colorPreview.setCardBackgroundColor(selectedColor)
+            })
+            .setNegativeButton("Отмена") { dialogInterface, _ ->
+                dialogInterface.dismiss()
+            }
+            .attachAlphaSlideBar(false)
+            .attachBrightnessSlideBar(true)
+            .setBottomSpace(12)
+            .show()
     }
     
     private fun setupSaveButton() {

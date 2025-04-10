@@ -115,8 +115,8 @@ class AddTransactionFragment : Fragment() {
     
     private fun updateCategoryAdapter(categories: Map<String, Long>) {
         val categoryNames = categories.keys.toList()
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categoryNames)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        val adapter = ArrayAdapter(requireContext(), R.layout.item_spinner, categoryNames)
+        adapter.setDropDownViewResource(R.layout.item_spinner_dropdown)
         
         binding.categorySpinner.adapter = adapter
         binding.categorySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
