@@ -130,19 +130,46 @@ class AnalysisViewModel(application: Application) : AndroidViewModel(application
     }
     
     // Обновление данных для круговых диаграмм
-    private fun updateExpenseByCategory() {
-        val transactions = expenseTransactions.value ?: return
-        val categories = expenseCategories.value ?: return
+    // Публичный метод для принудительного обновления данных о расходах по категориям
+    fun updateExpenseByCategory() {
+        val transactions = expenseTransactions.value
+        val categories = expenseCategories.value
         
-        viewModelScope.launch(Dispatchers.Default) {
-            val result = mutableMapOf<Category, Double>()
-            val categoriesMap = categories.associateBy { it.id }
-            
-            transactions.forEach { transaction ->
-                val category = categoriesMap[transaction.categoryId] ?: return@forEach
-                result[category] = (result[category] ?: 0.0) + transaction.amount
+        if (transactions.isNullOrEmpty() || categories.isNullOrEmpty()) {
+            // Запросим данные из базы данных
+            viewModelScope.launch(Dispatchers.IO) {
+                val transactionsFromDb = transactionDao.getTransactionsByTypeSync(CategoryType.EXPENSE)
+                val categoriesFromDb = categoryDao.getCategoriesByTypeSync(CategoryType.EXPENSE)
+                
+                if (transactionsFromDb.isNotEmpty() && categoriesFromDb.isNotEmpty()) {
+                    val result = processExpensesByCategory(transactionsFromDb, categoriesFromDb)
+                    expenseByCategory.postValue(result)
+                } else {
+                    // Если данных всё ещё нет, установим пустой map
+                    expenseByCategory.postValue(emptyMap())
+                }
             }
-            
+        } else {
+            // Используем имеющиеся данные
+            processExpensesByCategoryAndPost(transactions, categories)
+        }
+    }
+    
+    private fun processExpensesByCategory(transactions: List<Transaction>, categories: List<Category>): Map<Category, Double> {
+        val result = mutableMapOf<Category, Double>()
+        val categoriesMap = categories.associateBy { it.id }
+        
+        transactions.forEach { transaction ->
+            val category = categoriesMap[transaction.categoryId] ?: return@forEach
+            result[category] = (result[category] ?: 0.0) + transaction.amount
+        }
+        
+        return result
+    }
+    
+    private fun processExpensesByCategoryAndPost(transactions: List<Transaction>, categories: List<Category>) {
+        viewModelScope.launch(Dispatchers.Default) {
+            val result = processExpensesByCategory(transactions, categories)
             expenseByCategory.postValue(result)
         }
     }

@@ -19,6 +19,9 @@ interface TransactionDao {
     @Query("SELECT * FROM transactions WHERE type = :type ORDER BY date DESC")
     fun getTransactionsByType(type: CategoryType): LiveData<List<Transaction>>
     
+    @Query("SELECT * FROM transactions WHERE type = :type ORDER BY date DESC")
+    fun getTransactionsByTypeSync(type: CategoryType): List<Transaction>
+    
     @Query("SELECT * FROM transactions WHERE date BETWEEN :startDate AND :endDate ORDER BY date DESC")
     fun getTransactionsBetweenDates(startDate: Date, endDate: Date): LiveData<List<Transaction>>
     

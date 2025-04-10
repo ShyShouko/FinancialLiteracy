@@ -1,5 +1,6 @@
 package com.example.financialliteracy.ui.home
 
+import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -28,6 +29,9 @@ class HomeFragment : Fragment() {
     private lateinit var transactionViewModel: TransactionViewModel
     private lateinit var categoryViewModel: CategoryViewModel
     private lateinit var analysisViewModel: AnalysisViewModel
+    
+    // Флаг для определения темного режима
+    private var isDarkMode: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,6 +39,13 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        
+        // Определяем текущую тему
+        isDarkMode = when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_YES -> true
+            else -> false
+        }
+        
         return binding.root
     }
 
@@ -49,7 +60,7 @@ class HomeFragment : Fragment() {
         setupButtons()
         observeData()
         
-        // Инициализируем и обновляем данные круговой диаграммы при запуске
+        // Инициализируем и немедленно обновляем данные круговой диаграммы
         updatePieChartWithCurrentData()
     }
     
@@ -66,11 +77,15 @@ class HomeFragment : Fragment() {
     }
     
     private fun observeCategoriesAndTransactions() {
+        // Наблюдаем за AnalysisViewModel для получения актуальных данных о транзакциях по категориям
         analysisViewModel.expenseByCategory.observe(viewLifecycleOwner) { expenseMap ->
             if (expenseMap.isNotEmpty()) {
                 updatePieChartWithData(expenseMap)
             }
         }
+        
+        // Принудительно инициируем загрузку и расчет данных
+        analysisViewModel.updateExpenseByCategory()
     }
     
     private fun updatePieChartWithData(expenseMap: Map<com.example.financialliteracy.data.model.Category, Double>) {
@@ -93,7 +108,7 @@ class HomeFragment : Fragment() {
             val dataSet = PieDataSet(entries, "Категории")
             dataSet.colors = colors
             dataSet.valueTextSize = 14f
-            dataSet.valueTextColor = Color.BLACK
+            dataSet.valueTextColor = if (isDarkMode) Color.WHITE else Color.BLACK
             
             val data = PieData(dataSet)
             data.setValueFormatter(object : ValueFormatter() {
@@ -108,13 +123,21 @@ class HomeFragment : Fragment() {
     }
 
     private fun setupPieChart() {
-        binding.pieChart.description.isEnabled = false
-        binding.pieChart.setEntryLabelTextSize(12f)
-        binding.pieChart.setEntryLabelColor(Color.BLACK)
-        binding.pieChart.legend.textSize = 14f
-        binding.pieChart.setDrawEntryLabels(false)
-        binding.pieChart.setCenterText("Расходы")
-        binding.pieChart.setCenterTextSize(18f)
+        binding.pieChart.apply {
+            description.isEnabled = false
+            setEntryLabelTextSize(12f)
+            // Устанавливаем цвет текста в зависимости от темы
+            setEntryLabelColor(if (isDarkMode) Color.WHITE else Color.BLACK)
+            legend.textSize = 14f
+            legend.textColor = if (isDarkMode) Color.WHITE else Color.BLACK
+            setDrawEntryLabels(false)
+            setCenterText("Расходы")
+            setCenterTextSize(18f)
+            setCenterTextColor(if (isDarkMode) Color.WHITE else Color.BLACK)
+            setHoleColor(if (isDarkMode) 
+                resources.getColor(R.color.black, null) 
+                else resources.getColor(R.color.white, null))
+        }
     }
 
     private fun setupButtons() {
@@ -164,11 +187,25 @@ class HomeFragment : Fragment() {
         val expense = transactionViewModel.totalExpense.value ?: 0.0
         val balance = income - expense
         binding.balanceText.text = formatCurrency(balance)
+        
+        // Установка цвета в зависимости от знака баланса
+        val balanceColor = when {
+            balance > 0 -> resources.getColor(R.color.income, null)
+            balance < 0 -> resources.getColor(R.color.expense, null)
+            else -> if (isDarkMode) Color.WHITE else Color.BLACK
+        }
+        binding.balanceText.setTextColor(balanceColor)
     }
 
     private fun updatePieChart() {
         val transactions = transactionViewModel.expenseTransactions.value ?: return
         val categories = categoryViewModel.expenseCategories.value ?: return
+
+        if (transactions.isEmpty() || categories.isEmpty()) {
+            binding.pieChart.visibility = View.GONE
+            binding.chartTitle.visibility = View.GONE
+            return
+        }
 
         // Группируем транзакции по категориям
         val expensesByCategory = transactions.groupBy { it.categoryId }
@@ -197,7 +234,7 @@ class HomeFragment : Fragment() {
             val dataSet = PieDataSet(entries, "Категории")
             dataSet.colors = colors
             dataSet.valueTextSize = 14f
-            dataSet.valueTextColor = Color.BLACK
+            dataSet.valueTextColor = if (isDarkMode) Color.WHITE else Color.BLACK
 
             val data = PieData(dataSet)
             data.setValueFormatter(object : ValueFormatter() {

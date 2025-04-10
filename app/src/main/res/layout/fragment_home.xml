@@ -30,6 +30,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/balance"
                 android:textAlignment="center"
+                android:textColor="?attr/colorOnSurface"
                 android:textAppearance="@style/TextAppearance.Material3.TitleLarge" />
 
             <TextView
@@ -59,6 +60,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/income"
                         android:textAlignment="center"
+                        android:textColor="?attr/colorOnSurface"
                         android:textAppearance="@style/TextAppearance.Material3.TitleSmall" />
 
                     <TextView
@@ -82,6 +84,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/expenses"
                         android:textAlignment="center"
+                        android:textColor="?attr/colorOnSurface"
                         android:textAppearance="@style/TextAppearance.Material3.TitleSmall" />
 
                     <TextView
@@ -103,6 +106,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/spending_by_category"
+        android:textColor="?attr/colorOnSurface"
         android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
         app:layout_constraintTop_toBottomOf="@id/balanceCard" />
 
@@ -132,8 +136,10 @@
             android:layout_weight="1"
             android:backgroundTint="@color/income"
             android:text="@string/add_income"
+            android:textColor="@color/black"
             app:cornerRadius="12dp"
-            app:icon="@android:drawable/ic_input_add" />
+            app:icon="@android:drawable/ic_input_add"
+            app:iconTint="@color/black" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/addExpenseButton"
@@ -143,8 +149,10 @@
             android:layout_weight="1"
             android:backgroundTint="@color/expense"
             android:text="@string/add_expense"
+            android:textColor="@color/white"
             app:cornerRadius="12dp"
-            app:icon="@android:drawable/ic_input_add" />
+            app:icon="@android:drawable/ic_input_add"
+            app:iconTint="@color/white" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout> 

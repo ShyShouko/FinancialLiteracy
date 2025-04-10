@@ -18,6 +18,9 @@ interface CategoryDao {
     @Query("SELECT * FROM categories WHERE type = :type")
     fun getCategoriesByType(type: CategoryType): LiveData<List<Category>>
     
+    @Query("SELECT * FROM categories WHERE type = :type")
+    fun getCategoriesByTypeSync(type: CategoryType): List<Category>
+    
     @Query("SELECT * FROM categories WHERE id = :categoryId")
     suspend fun getCategoryById(categoryId: Long): Category?
     
