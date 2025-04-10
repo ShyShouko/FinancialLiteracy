@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.financialliteracy.ui.home.HomeFragment"
+        android:label="Главная"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_addTransactionFragment"
+            app:destination="@id/addTransactionFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.example.financialliteracy.ui.calendar.CalendarFragment"
+        android:label="Календарь"
+        tools:layout="@layout/fragment_calendar" />
+
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.example.financialliteracy.ui.category.CategoryFragment"
+        android:label="Категории"
+        tools:layout="@layout/fragment_category">
+        <action
+            android:id="@+id/action_categoryFragment_to_addCategoryFragment"
+            app:destination="@id/addCategoryFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/analysisFragment"
+        android:name="com.example.financialliteracy.ui.analysis.AnalysisFragment"
+        android:label="Анализ"
+        tools:layout="@layout/fragment_analysis" />
+
+    <fragment
+        android:id="@+id/addTransactionFragment"
+        android:name="com.example.financialliteracy.ui.transactions.AddTransactionFragment"
+        android:label="Добавить транзакцию"
+        tools:layout="@layout/fragment_add_transaction" />
+
+    <fragment
+        android:id="@+id/addCategoryFragment"
+        android:name="com.example.financialliteracy.ui.category.AddCategoryFragment"
+        android:label="Добавить категорию"
+        tools:layout="@layout/fragment_add_category" />
+
+</navigation> 

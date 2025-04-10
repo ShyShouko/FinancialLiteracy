@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="2dp">
+
+    <TextView
+        android:id="@+id/dayText"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:gravity="center"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="22" />
+
+    <View
+        android:id="@+id/selectedBackground"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@drawable/circle_background"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/dayText"
+        app:layout_constraintEnd_toEndOf="@id/dayText"
+        app:layout_constraintStart_toStartOf="@id/dayText"
+        app:layout_constraintTop_toTopOf="@id/dayText" />
+
+    <View
+        android:id="@+id/incomeIndicator"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/income"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@id/expenseIndicator"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/dayText" />
+
+    <View
+        android:id="@+id/expenseIndicator"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="2dp"
+        android:background="@color/expense"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/incomeIndicator"
+        app:layout_constraintTop_toBottomOf="@id/dayText" />
+
+</androidx.constraintlayout.widget.ConstraintLayout> 

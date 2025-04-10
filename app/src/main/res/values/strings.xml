@@ -1,0 +1,55 @@
+<resources>
+    <string name="app_name">Финансовая Грамотность</string>
+    
+    <!-- Navigation -->
+    <string name="nav_home">Главная</string>
+    <string name="nav_calendar">Календарь</string>
+    <string name="nav_categories">Категории</string>
+    <string name="nav_analysis">Анализ</string>
+    
+    <!-- Home -->
+    <string name="income">Доходы</string>
+    <string name="expenses">Расходы</string>
+    <string name="balance">Баланс</string>
+    <string name="add_income">Добавить доход</string>
+    <string name="add_expense">Добавить расход</string>
+    
+    <!-- Transactions -->
+    <string name="add_transaction">Добавить транзакцию</string>
+    <string name="transaction_amount">Сумма</string>
+    <string name="transaction_date">Дата</string>
+    <string name="transaction_category">Категория</string>
+    <string name="transaction_note">Примечание</string>
+    <string name="save">Сохранить</string>
+    <string name="cancel">Отмена</string>
+    
+    <!-- Categories -->
+    <string name="add_category">Добавить категорию</string>
+    <string name="category_name">Название категории</string>
+    <string name="category_type">Тип категории</string>
+    <string name="category_color">Цвет категории</string>
+    
+    <!-- Predefined categories -->
+    <string name="category_food">Еда</string>
+    <string name="category_transport">Транспорт</string>
+    <string name="category_entertainment">Развлечения</string>
+    <string name="category_shopping">Покупки</string>
+    <string name="category_health">Здоровье</string>
+    <string name="category_housing">Жилье</string>
+    <string name="category_education">Образование</string>
+    <string name="category_salary">Зарплата</string>
+    <string name="category_gifts">Подарки</string>
+    <string name="category_other">Другое</string>
+    
+    <!-- Analysis -->
+    <string name="weekly_analysis">Еженедельный анализ</string>
+    <string name="monthly_analysis">Ежемесячный анализ</string>
+    <string name="financial_advice">Финансовые советы</string>
+    <string name="spending_by_category">Расходы по категориям</string>
+    
+    <!-- Calendar -->
+    <string name="select_period">Выберите период</string>
+    <string name="daily_transactions">Транзакции за день</string>
+    <string name="monthly_view">Месячный вид</string>
+    <string name="weekly_view">Недельный вид</string>
+</resources>
