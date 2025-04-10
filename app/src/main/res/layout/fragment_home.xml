@@ -5,15 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
+    android:background="?attr/colorSurface"
     tools:context=".ui.home.HomeFragment">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:id="@+id/balanceCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -29,8 +30,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/balance"
                 android:textAlignment="center"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textAppearance="@style/TextAppearance.Material3.TitleLarge" />
 
             <TextView
                 android:id="@+id/balanceText"
@@ -38,9 +38,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:textAlignment="center"
-                android:textColor="@color/colorPrimary"
-                android:textSize="24sp"
-                android:textStyle="bold"
+                android:textColor="?attr/colorPrimary"
+                android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
                 tools:text="15,000₽" />
 
             <LinearLayout
@@ -60,7 +59,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/income"
                         android:textAlignment="center"
-                        android:textSize="14sp" />
+                        android:textAppearance="@style/TextAppearance.Material3.TitleSmall" />
 
                     <TextView
                         android:id="@+id/incomeText"
@@ -68,7 +67,7 @@
                         android:layout_height="wrap_content"
                         android:textAlignment="center"
                         android:textColor="@color/income"
-                        android:textSize="18sp"
+                        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
                         tools:text="20,000₽" />
                 </LinearLayout>
 
@@ -83,7 +82,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/expenses"
                         android:textAlignment="center"
-                        android:textSize="14sp" />
+                        android:textAppearance="@style/TextAppearance.Material3.TitleSmall" />
 
                     <TextView
                         android:id="@+id/expenseText"
@@ -91,12 +90,12 @@
                         android:layout_height="wrap_content"
                         android:textAlignment="center"
                         android:textColor="@color/expense"
-                        android:textSize="18sp"
+                        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
                         tools:text="5,000₽" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:id="@+id/chartTitle"
@@ -104,8 +103,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="@string/spending_by_category"
-        android:textSize="18sp"
-        android:textStyle="bold"
+        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
         app:layout_constraintTop_toBottomOf="@id/balanceCard" />
 
     <com.github.mikephil.charting.charts.PieChart
@@ -134,7 +132,7 @@
             android:layout_weight="1"
             android:backgroundTint="@color/income"
             android:text="@string/add_income"
-            app:cornerRadius="8dp"
+            app:cornerRadius="12dp"
             app:icon="@android:drawable/ic_input_add" />
 
         <com.google.android.material.button.MaterialButton
@@ -145,7 +143,7 @@
             android:layout_weight="1"
             android:backgroundTint="@color/expense"
             android:text="@string/add_expense"
-            app:cornerRadius="8dp"
+            app:cornerRadius="12dp"
             app:icon="@android:drawable/ic_input_add" />
     </LinearLayout>
 

@@ -27,6 +27,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var transactionViewModel: TransactionViewModel
     private lateinit var categoryViewModel: CategoryViewModel
+    private lateinit var analysisViewModel: AnalysisViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,10 +43,68 @@ class HomeFragment : Fragment() {
 
         transactionViewModel = ViewModelProvider(requireActivity())[TransactionViewModel::class.java]
         categoryViewModel = ViewModelProvider(requireActivity())[CategoryViewModel::class.java]
+        analysisViewModel = ViewModelProvider(requireActivity())[AnalysisViewModel::class.java]
 
         setupPieChart()
         setupButtons()
         observeData()
+        
+        // Инициализируем и обновляем данные круговой диаграммы при запуске
+        updatePieChartWithCurrentData()
+    }
+    
+    private fun updatePieChartWithCurrentData() {
+        val transactions = transactionViewModel.expenseTransactions.value
+        val categories = categoryViewModel.expenseCategories.value
+        
+        if (transactions != null && categories != null && transactions.isNotEmpty()) {
+            updatePieChart()
+        } else {
+            // Наблюдаем за изменениями в категориях и транзакциях для первоначального обновления
+            observeCategoriesAndTransactions()
+        }
+    }
+    
+    private fun observeCategoriesAndTransactions() {
+        analysisViewModel.expenseByCategory.observe(viewLifecycleOwner) { expenseMap ->
+            if (expenseMap.isNotEmpty()) {
+                updatePieChartWithData(expenseMap)
+            }
+        }
+    }
+    
+    private fun updatePieChartWithData(expenseMap: Map<com.example.financialliteracy.data.model.Category, Double>) {
+        val entries = mutableListOf<PieEntry>()
+        val colors = mutableListOf<Int>()
+        
+        expenseMap.forEach { (category, amount) ->
+            entries.add(PieEntry(amount.toFloat(), category.name))
+            colors.add(category.color)
+        }
+        
+        if (entries.isEmpty()) {
+            // Если нет данных, скрываем диаграмму
+            binding.pieChart.visibility = View.GONE
+            binding.chartTitle.visibility = View.GONE
+        } else {
+            binding.pieChart.visibility = View.VISIBLE
+            binding.chartTitle.visibility = View.VISIBLE
+            
+            val dataSet = PieDataSet(entries, "Категории")
+            dataSet.colors = colors
+            dataSet.valueTextSize = 14f
+            dataSet.valueTextColor = Color.BLACK
+            
+            val data = PieData(dataSet)
+            data.setValueFormatter(object : ValueFormatter() {
+                override fun getFormattedValue(value: Float): String {
+                    return formatCurrency(value.toDouble())
+                }
+            })
+            
+            binding.pieChart.data = data
+            binding.pieChart.invalidate()
+        }
     }
 
     private fun setupPieChart() {
@@ -91,6 +150,11 @@ class HomeFragment : Fragment() {
         // Наблюдаем за изменениями в категориях расходов для обновления диаграммы
         transactionViewModel.expenseTransactions.observe(viewLifecycleOwner) { transactions ->
             // Группируем транзакции по категориям для диаграммы
+            updatePieChart()
+        }
+        
+        // Наблюдаем за изменениями в категориях для обновления диаграммы
+        categoryViewModel.expenseCategories.observe(viewLifecycleOwner) { categories ->
             updatePieChart()
         }
     }
