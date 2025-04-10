@@ -7,37 +7,38 @@ import androidx.lifecycle.viewModelScope
 import com.example.financialliteracy.data.database.AppDatabase
 import com.example.financialliteracy.data.model.Category
 import com.example.financialliteracy.data.model.CategoryType
-import com.example.financialliteracy.data.repository.CategoryRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class CategoryViewModel(application: Application) : AndroidViewModel(application) {
     
-    private val repository: CategoryRepository
-    val allCategories: LiveData<List<Category>>
-    val incomeCategories: LiveData<List<Category>>
-    val expenseCategories: LiveData<List<Category>>
+    private val categoryDao = AppDatabase.getDatabase(application).categoryDao()
     
-    init {
-        val categoryDao = AppDatabase.getDatabase(application).categoryDao()
-        repository = CategoryRepository(categoryDao)
-        allCategories = repository.allCategories
-        incomeCategories = repository.getCategoriesByType(CategoryType.INCOME)
-        expenseCategories = repository.getCategoriesByType(CategoryType.EXPENSE)
+    val allCategories: LiveData<List<Category>> = categoryDao.getAllCategories()
+    val expenseCategories: LiveData<List<Category>> = categoryDao.getCategoriesByType(CategoryType.EXPENSE)
+    val incomeCategories: LiveData<List<Category>> = categoryDao.getCategoriesByType(CategoryType.INCOME)
+    
+    fun insertCategory(category: Category) {
+        viewModelScope.launch(Dispatchers.IO) {
+            categoryDao.insertCategory(category)
+        }
     }
     
-    fun insertCategory(category: Category) = viewModelScope.launch {
-        repository.insertCategory(category)
+    fun updateCategory(category: Category) {
+        viewModelScope.launch(Dispatchers.IO) {
+            categoryDao.updateCategory(category)
+        }
     }
     
-    fun updateCategory(category: Category) = viewModelScope.launch {
-        repository.updateCategory(category)
+    fun deleteCategory(category: Category) {
+        viewModelScope.launch(Dispatchers.IO) {
+            categoryDao.deleteCategory(category)
+        }
     }
     
-    fun deleteCategory(category: Category) = viewModelScope.launch {
-        repository.deleteCategory(category)
-    }
-    
-    suspend fun getCategoryById(categoryId: Long): Category? {
-        return repository.getCategoryById(categoryId)
+    fun deleteCustomCategories() {
+        viewModelScope.launch(Dispatchers.IO) {
+            categoryDao.deleteCustomCategories()
+        }
     }
 }

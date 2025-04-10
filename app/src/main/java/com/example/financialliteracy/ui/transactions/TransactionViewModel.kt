@@ -7,52 +7,50 @@ import androidx.lifecycle.viewModelScope
 import com.example.financialliteracy.data.database.AppDatabase
 import com.example.financialliteracy.data.model.CategoryType
 import com.example.financialliteracy.data.model.Transaction
-import com.example.financialliteracy.data.repository.TransactionRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.Date
 
 class TransactionViewModel(application: Application) : AndroidViewModel(application) {
     
-    private val repository: TransactionRepository
-    val allTransactions: LiveData<List<Transaction>>
-    val incomeTransactions: LiveData<List<Transaction>>
-    val expenseTransactions: LiveData<List<Transaction>>
-    val totalIncome: LiveData<Double>
-    val totalExpense: LiveData<Double>
+    private val transactionDao = AppDatabase.getDatabase(application).transactionDao()
     
-    init {
-        val transactionDao = AppDatabase.getDatabase(application).transactionDao()
-        repository = TransactionRepository(transactionDao)
-        allTransactions = repository.allTransactions
-        incomeTransactions = repository.getTransactionsByType(CategoryType.INCOME)
-        expenseTransactions = repository.getTransactionsByType(CategoryType.EXPENSE)
-        totalIncome = repository.getTotalAmountByType(CategoryType.INCOME)
-        totalExpense = repository.getTotalAmountByType(CategoryType.EXPENSE)
-    }
+    val allTransactions: LiveData<List<Transaction>> = transactionDao.getAllTransactions()
+    val expenseTransactions: LiveData<List<Transaction>> = transactionDao.getTransactionsByType(CategoryType.EXPENSE)
+    val incomeTransactions: LiveData<List<Transaction>> = transactionDao.getTransactionsByType(CategoryType.INCOME)
     
-    fun insertTransaction(transaction: Transaction) = viewModelScope.launch {
-        repository.insertTransaction(transaction)
-    }
-    
-    fun updateTransaction(transaction: Transaction) = viewModelScope.launch {
-        repository.updateTransaction(transaction)
-    }
-    
-    fun deleteTransaction(transaction: Transaction) = viewModelScope.launch {
-        repository.deleteTransaction(transaction)
-    }
+    val totalExpense: LiveData<Double> = transactionDao.getTotalAmountByType(CategoryType.EXPENSE)
+    val totalIncome: LiveData<Double> = transactionDao.getTotalAmountByType(CategoryType.INCOME)
     
     fun getTransactionsBetweenDates(startDate: Date, endDate: Date): LiveData<List<Transaction>> {
-        return repository.getTransactionsBetweenDates(startDate, endDate)
+        return transactionDao.getTransactionsBetweenDates(startDate, endDate)
     }
     
     fun getTransactionsByCategory(categoryId: Long): LiveData<List<Transaction>> {
-        return repository.getTransactionsByCategory(categoryId)
+        return transactionDao.getTransactionsByCategory(categoryId)
     }
     
     fun getTotalAmountByTypeAndPeriod(type: CategoryType, startDate: Date, endDate: Date): LiveData<Double> {
-        return repository.getTotalAmountByTypeAndPeriod(type, startDate, endDate)
+        return transactionDao.getTotalAmountByTypeAndPeriod(type, startDate, endDate)
+    }
+    
+    fun insertTransaction(transaction: Transaction) {
+        viewModelScope.launch(Dispatchers.IO) {
+            transactionDao.insertTransaction(transaction)
+        }
+    }
+    
+    fun updateTransaction(transaction: Transaction) {
+        viewModelScope.launch(Dispatchers.IO) {
+            transactionDao.updateTransaction(transaction)
+        }
+    }
+    
+    fun deleteTransaction(transaction: Transaction) {
+        viewModelScope.launch(Dispatchers.IO) {
+            transactionDao.deleteTransaction(transaction)
+        }
     }
     
     fun getWeeklyTransactions(): LiveData<List<Transaction>> {
@@ -62,7 +60,7 @@ class TransactionViewModel(application: Application) : AndroidViewModel(applicat
         calendar.add(Calendar.DAY_OF_YEAR, -7)
         val startDate = calendar.time
         
-        return repository.getTransactionsBetweenDates(startDate, endDate)
+        return transactionDao.getTransactionsBetweenDates(startDate, endDate)
     }
     
     fun getMonthlyTransactions(): LiveData<List<Transaction>> {
@@ -72,10 +70,10 @@ class TransactionViewModel(application: Application) : AndroidViewModel(applicat
         calendar.add(Calendar.MONTH, -1)
         val startDate = calendar.time
         
-        return repository.getTransactionsBetweenDates(startDate, endDate)
+        return transactionDao.getTransactionsBetweenDates(startDate, endDate)
     }
     
     suspend fun getTransactionById(transactionId: Long): Transaction? {
-        return repository.getTransactionById(transactionId)
+        return transactionDao.getTransactionById(transactionId)
     }
 } 

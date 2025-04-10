@@ -67,6 +67,9 @@ dependencies {
     // CalendarView
     implementation("com.kizitonwose.calendar:view:2.5.0")
     
+    // ColorPickerView
+    implementation("com.github.skydoves:colorpickerview:2.3.0")
+    
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
