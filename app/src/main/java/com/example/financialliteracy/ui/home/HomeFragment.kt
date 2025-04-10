@@ -142,14 +142,12 @@ class HomeFragment : Fragment() {
 
     private fun setupButtons() {
         binding.addIncomeButton.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToAddTransactionFragment()
-            // TODO: передать параметр для типа транзакции (доход)
+            val action = HomeFragmentDirections.actionHomeFragmentToAddTransactionFragment("INCOME")
             findNavController().navigate(action)
         }
 
         binding.addExpenseButton.setOnClickListener {
-            val action = HomeFragmentDirections.actionHomeFragmentToAddTransactionFragment()
-            // TODO: передать параметр для типа транзакции (расход)
+            val action = HomeFragmentDirections.actionHomeFragmentToAddTransactionFragment("EXPENSE")
             findNavController().navigate(action)
         }
     }

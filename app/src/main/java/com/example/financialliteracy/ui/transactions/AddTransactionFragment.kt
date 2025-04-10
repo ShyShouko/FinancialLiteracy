@@ -50,6 +50,21 @@ class AddTransactionFragment : Fragment() {
         transactionViewModel = ViewModelProvider(requireActivity())[TransactionViewModel::class.java]
         categoryViewModel = ViewModelProvider(requireActivity())[CategoryViewModel::class.java]
         
+        // Получаем тип транзакции из аргументов
+        val transactionTypeArg = arguments?.getString("transactionType") ?: "EXPENSE"
+        
+        // Устанавливаем начальный тип транзакции
+        transactionType = when (transactionTypeArg) {
+            "INCOME" -> {
+                binding.radioIncome.isChecked = true
+                CategoryType.INCOME
+            }
+            else -> {
+                binding.radioExpense.isChecked = true
+                CategoryType.EXPENSE
+            }
+        }
+        
         setupUI()
         setupDatePicker()
         observeCategories()
@@ -71,7 +86,8 @@ class AddTransactionFragment : Fragment() {
     }
     
     private fun setupDatePicker() {
-        binding.dateLayout.setOnClickListener {
+        // Create a date picker click listener
+        val showDatePicker = {
             DatePickerDialog(
                 requireContext(),
                 { _, year, month, dayOfMonth ->
@@ -85,6 +101,10 @@ class AddTransactionFragment : Fragment() {
                 calendar.get(Calendar.DAY_OF_MONTH)
             ).show()
         }
+
+        // Set click listeners for both the layout and the edit text
+        binding.dateLayout.setOnClickListener { showDatePicker() }
+        binding.dateText.setOnClickListener { showDatePicker() }
     }
     
     private fun observeCategories() {

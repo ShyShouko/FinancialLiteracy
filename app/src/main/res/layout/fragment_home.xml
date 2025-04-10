@@ -136,10 +136,10 @@
             android:layout_weight="1"
             android:backgroundTint="@color/income"
             android:text="@string/add_income"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             app:cornerRadius="12dp"
             app:icon="@android:drawable/ic_input_add"
-            app:iconTint="@color/black" />
+            app:iconTint="@color/white" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/addExpenseButton"

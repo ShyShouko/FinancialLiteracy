@@ -48,7 +48,12 @@
         android:id="@+id/addTransactionFragment"
         android:name="com.example.financialliteracy.ui.transactions.AddTransactionFragment"
         android:label="Добавить транзакцию"
-        tools:layout="@layout/fragment_add_transaction" />
+        tools:layout="@layout/fragment_add_transaction">
+        <argument
+            android:name="transactionType"
+            app:argType="string"
+            android:defaultValue="EXPENSE" />
+    </fragment>
 
     <fragment
         android:id="@+id/addCategoryFragment"
