@@ -107,7 +107,7 @@ class HomeFragment : Fragment() {
             
             val dataSet = PieDataSet(entries, "Категории")
             dataSet.colors = colors
-            dataSet.valueTextSize = 14f
+            dataSet.valueTextSize = 0f // По умолчанию скрываем значения (размер 0)
             dataSet.valueTextColor = if (isDarkMode) Color.WHITE else Color.BLACK
             
             val data = PieData(dataSet)
@@ -137,6 +137,29 @@ class HomeFragment : Fragment() {
             setHoleColor(if (isDarkMode) 
                 resources.getColor(R.color.black, null) 
                 else resources.getColor(R.color.white, null))
+            
+            // Добавляем обработчик кликов на сегменты диаграммы
+            setOnChartValueSelectedListener(object : com.github.mikephil.charting.listener.OnChartValueSelectedListener {
+                override fun onValueSelected(e: com.github.mikephil.charting.data.Entry?, h: com.github.mikephil.charting.highlight.Highlight?) {
+                    // Показываем значение только для выбранного сегмента
+                    if (data != null && e is PieEntry) {
+                        val value = e.value
+                        val label = e.label
+                        
+                        // Отображаем значение в центре диаграммы
+                        setCenterText("$label\n${formatCurrency(value.toDouble())}")
+                        
+                        // Обновляем диаграмму
+                        invalidate()
+                    }
+                }
+
+                override fun onNothingSelected() {
+                    // Возвращаем исходный текст в центре
+                    setCenterText("Расходы")
+                    invalidate()
+                }
+            })
         }
     }
 
@@ -231,7 +254,7 @@ class HomeFragment : Fragment() {
 
             val dataSet = PieDataSet(entries, "Категории")
             dataSet.colors = colors
-            dataSet.valueTextSize = 14f
+            dataSet.valueTextSize = 0f // По умолчанию скрываем значения (размер 0)
             dataSet.valueTextColor = if (isDarkMode) Color.WHITE else Color.BLACK
 
             val data = PieData(dataSet)
