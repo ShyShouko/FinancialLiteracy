@@ -19,7 +19,11 @@
         android:id="@+id/calendarFragment"
         android:name="com.example.financialliteracy.ui.calendar.CalendarFragment"
         android:label="Календарь"
-        tools:layout="@layout/fragment_calendar" />
+        tools:layout="@layout/fragment_calendar">
+        <action
+            android:id="@+id/action_calendarFragment_to_addTransactionFragment"
+            app:destination="@id/addTransactionFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/categoryFragment"
@@ -29,6 +33,9 @@
         <action
             android:id="@+id/action_categoryFragment_to_addCategoryFragment"
             app:destination="@id/addCategoryFragment" />
+        <action
+            android:id="@+id/action_categoryFragment_to_editCategoryFragment"
+            app:destination="@id/editCategoryFragment" />
     </fragment>
 
     <fragment
@@ -47,6 +54,20 @@
         android:id="@+id/addCategoryFragment"
         android:name="com.example.financialliteracy.ui.category.AddCategoryFragment"
         android:label="Добавить категорию"
-        tools:layout="@layout/fragment_add_category" />
+        tools:layout="@layout/fragment_add_category">
+        <argument
+            android:name="categoryType"
+            app:argType="com.example.financialliteracy.data.model.CategoryType" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editCategoryFragment"
+        android:name="com.example.financialliteracy.ui.category.EditCategoryFragment"
+        android:label="Редактировать категорию"
+        tools:layout="@layout/fragment_edit_category">
+        <argument
+            android:name="categoryId"
+            app:argType="long" />
+    </fragment>
 
 </navigation> 

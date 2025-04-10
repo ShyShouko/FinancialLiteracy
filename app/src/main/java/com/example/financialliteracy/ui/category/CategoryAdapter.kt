@@ -10,7 +10,7 @@ import com.example.financialliteracy.R
 import com.example.financialliteracy.data.model.Category
 import com.example.financialliteracy.databinding.ItemCategoryBinding
 
-class CategoryAdapter(private val listener: CategoryClickListener) :
+class CategoryAdapter(private val listener: OnCategoryClickListener) :
     ListAdapter<Category, CategoryAdapter.CategoryViewHolder>(CategoryDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
@@ -28,7 +28,7 @@ class CategoryAdapter(private val listener: CategoryClickListener) :
 
     class CategoryViewHolder(
         private val binding: ItemCategoryBinding,
-        private val listener: CategoryClickListener
+        private val listener: OnCategoryClickListener
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(category: Category) {
@@ -48,11 +48,11 @@ class CategoryAdapter(private val listener: CategoryClickListener) :
                 popup.setOnMenuItemClickListener { menuItem ->
                     when (menuItem.itemId) {
                         R.id.action_edit -> {
-                            listener.onEditClick(category)
+                            listener.onCategoryClick(category)
                             true
                         }
                         R.id.action_delete -> {
-                            listener.onDeleteClick(category)
+                            // Функция удаления категории будет реализована позже
                             true
                         }
                         else -> false
@@ -78,9 +78,7 @@ class CategoryAdapter(private val listener: CategoryClickListener) :
         }
     }
 
-    interface CategoryClickListener {
+    interface OnCategoryClickListener {
         fun onCategoryClick(category: Category)
-        fun onEditClick(category: Category)
-        fun onDeleteClick(category: Category)
     }
 } 

@@ -19,7 +19,19 @@
             android:layout_height="?attr/actionBarSize"
             app:title="Категории"
             app:titleTextAppearance="@style/TextAppearance.Material3.TitleLarge"
-            app:titleCentered="false" />
+            app:titleCentered="false">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/addCategoryButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="8dp"
+                android:text="Добавить"
+                app:icon="@android:drawable/ic_input_add"
+                style="@style/Widget.Material3.Button.TonalButton" />
+
+        </com.google.android.material.appbar.MaterialToolbar>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
@@ -57,16 +69,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/addCategoryButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:text="Добавить"
-        app:icon="@android:drawable/ic_input_add"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout> 

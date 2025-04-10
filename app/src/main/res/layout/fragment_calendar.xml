@@ -19,7 +19,19 @@
             android:layout_height="?attr/actionBarSize"
             app:title="Календарь"
             app:titleTextAppearance="@style/TextAppearance.Material3.TitleLarge"
-            app:titleCentered="false" />
+            app:titleCentered="false">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/addTransactionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginEnd="8dp"
+                android:text="Добавить"
+                app:icon="@android:drawable/ic_input_add"
+                style="@style/Widget.Material3.Button.TonalButton" />
+
+        </com.google.android.material.appbar.MaterialToolbar>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/viewTabLayout"
@@ -79,81 +91,33 @@
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/dateRangeCard"
+    <LinearLayout
+        android:id="@+id/dateRangeSelectionLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="2dp"
+        android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/calendarCard">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/currentRangeText"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="12dp">
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            android:textColor="?attr/colorOnSurface"
+            tools:text="Период: 01.06.2023 - 30.06.2023" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Выбор интервала дат"
-                android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
-                android:layout_marginBottom="8dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/startDateLayout"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="8dp"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                    android:hint="С">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/startDateText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:focusable="false"
-                        android:clickable="true"
-                        android:inputType="none" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/endDateLayout"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_marginStart="8dp"
-                    style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                    android:hint="По">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/endDateText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:focusable="false"
-                        android:clickable="true"
-                        android:inputType="none" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/applyDateRangeButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginTop="8dp"
-                android:text="Применить"
-                style="@style/Widget.Material3.Button"/>
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/selectDateRangeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Выбрать даты"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            app:icon="@android:drawable/ic_menu_my_calendar" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/dailyTransactionsTitle"
@@ -163,7 +127,7 @@
         android:layout_marginTop="16dp"
         android:text="Транзакции за период"
         android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-        app:layout_constraintTop_toBottomOf="@id/dateRangeCard" />
+        app:layout_constraintTop_toBottomOf="@id/dateRangeSelectionLayout" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/transactionsRecyclerView"
@@ -200,7 +164,8 @@
                 android:layout_height="wrap_content"
                 android:text="Итог за период"
                 android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                android:layout_marginBottom="8dp" />
+                android:layout_marginBottom="8dp"
+                android:textColor="?attr/colorOnSurface" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -213,6 +178,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Доход"
+                    android:textColor="?attr/colorOnSurface"
                     android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
 
                 <TextView
@@ -235,6 +201,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Расход"
+                    android:textColor="?attr/colorOnSurface"
                     android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
 
                 <TextView
@@ -263,6 +230,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Баланс"
+                    android:textColor="?attr/colorOnSurface"
                     android:textAppearance="@style/TextAppearance.Material3.TitleSmall" />
 
                 <TextView
@@ -271,6 +239,93 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
                     tools:text="7,000₽" />
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Диалог для выбора интервала дат (будет отображаться при нажатии на кнопку) -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/dateRangeCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:visibility="gone"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="Выбор интервала дат"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                android:textColor="?attr/colorOnSurface" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/startDateLayout"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:hint="С">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/startDateText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/endDateLayout"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:hint="По">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/endDateText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/cancelDateRangeButton"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:text="Отмена" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/applyDateRangeButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Применить" />
             </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

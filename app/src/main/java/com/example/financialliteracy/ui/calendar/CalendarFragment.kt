@@ -5,8 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.financialliteracy.data.model.CategoryType
 import com.example.financialliteracy.data.model.Transaction
@@ -57,6 +60,10 @@ class CalendarFragment : Fragment() {
     // Флаг для определения пользовательского периода
     private var isCustomPeriod = false
     
+    // Анимации
+    private val fadeIn = AlphaAnimation(0f, 1f).apply { duration = 300 }
+    private val fadeOut = AlphaAnimation(1f, 0f).apply { duration = 300 }
+    
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -76,8 +83,10 @@ class CalendarFragment : Fragment() {
         setupTabLayout()
         setupCalendar()
         setupDateRangePicker()
+        setupButtons()
         updateTransactionsList()
         updateHeader()
+        updateDateRangeTexts()
     }
     
     private fun setupRecyclerView() {
@@ -85,6 +94,14 @@ class CalendarFragment : Fragment() {
         binding.transactionsRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = transactionAdapter
+        }
+    }
+    
+    private fun setupButtons() {
+        // Кнопка добавления транзакции
+        binding.addTransactionButton.setOnClickListener {
+            val action = CalendarFragmentDirections.actionCalendarFragmentToAddTransactionFragment()
+            findNavController().navigate(action)
         }
     }
     
@@ -96,8 +113,6 @@ class CalendarFragment : Fragment() {
                 updateCalendarView()
                 updateHeader()
                 updateTransactionsList()
-                
-                // Обновляем текстовые поля интервала дат
                 updateDateRangeTexts()
             }
             
@@ -123,8 +138,24 @@ class CalendarFragment : Fragment() {
     }
     
     private fun setupDateRangePicker() {
-        // Устанавливаем начальные значения для интервала дат
-        updateDateRangeTexts()
+        // Кнопка выбора интервала дат
+        binding.selectDateRangeButton.setOnClickListener {
+            showDateRangeDialog()
+        }
+        
+        // Кнопка применения интервала дат
+        binding.applyDateRangeButton.setOnClickListener {
+            isCustomPeriod = true
+            hideDateRangeDialog()
+            updateTransactionsList()
+            binding.dailyTransactionsTitle.text = "Транзакции за выбранный период"
+            updateDateRangeTexts()
+        }
+        
+        // Кнопка отмены выбора интервала
+        binding.cancelDateRangeButton.setOnClickListener {
+            hideDateRangeDialog()
+        }
         
         // Настройка выбора начальной даты
         binding.startDateText.setOnClickListener {
@@ -135,13 +166,28 @@ class CalendarFragment : Fragment() {
         binding.endDateText.setOnClickListener {
             showDatePickerDialog(false)
         }
+    }
+    
+    private fun showDateRangeDialog() {
+        // Обновляем поля с датами прежде чем показать диалог
+        binding.startDateText.setText(simpleDateFormat.format(startDateCalendar.time))
+        binding.endDateText.setText(simpleDateFormat.format(endDateCalendar.time))
         
-        // Обработка кнопки применения интервала
-        binding.applyDateRangeButton.setOnClickListener {
-            isCustomPeriod = true
-            updateTransactionsList()
-            binding.dailyTransactionsTitle.text = "Транзакции за выбранный период"
-        }
+        // Показываем диалог с анимацией
+        binding.dateRangeCard.visibility = View.VISIBLE
+        binding.dateRangeCard.startAnimation(fadeIn)
+    }
+    
+    private fun hideDateRangeDialog() {
+        // Скрываем диалог с анимацией
+        fadeOut.setAnimationListener(object : Animation.AnimationListener {
+            override fun onAnimationStart(animation: Animation?) {}
+            override fun onAnimationRepeat(animation: Animation?) {}
+            override fun onAnimationEnd(animation: Animation?) {
+                binding.dateRangeCard.visibility = View.GONE
+            }
+        })
+        binding.dateRangeCard.startAnimation(fadeOut)
     }
     
     private fun showDatePickerDialog(isStartDate: Boolean) {
@@ -233,9 +279,13 @@ class CalendarFragment : Fragment() {
             }
         }
         
-        // Установка текста в поля выбора даты
+        // Установка текста в поля выбора даты и в текстовое поле периода
         binding.startDateText.setText(simpleDateFormat.format(startDateCalendar.time))
         binding.endDateText.setText(simpleDateFormat.format(endDateCalendar.time))
+        
+        // Обновление текста текущего периода
+        val periodText = "Период: ${simpleDateFormat.format(startDateCalendar.time)} - ${simpleDateFormat.format(endDateCalendar.time)}"
+        binding.currentRangeText.text = periodText
     }
     
     private fun updateCalendarView() {
